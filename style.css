@@ -1,0 +1,123 @@
+:root {
+    --primary: #2c3e50;
+    --accent: #3498db;
+    --success: #27ae60;
+    --danger: #e74c3c;
+    --bg-in: #e8f8f5; /* Verde claro para entradas */
+    --bg-out: #fef9e7; /* Amarillo claro para salidas */
+    --bg-final: #ebf5fb; /* Azul claro para totales */
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background-color: #f4f7f6;
+}
+
+header {
+    background: var(--primary);
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
+
+.tabs {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    background: #455a64;
+    color: white;
+    border-radius: 5px;
+}
+
+.tab-btn.active {
+    background: var(--accent);
+    font-weight: bold;
+}
+
+main { padding: 20px; }
+
+.form-container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.btn-add {
+    background: var(--success);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Estilo Tabla Excel */
+.table-wrapper {
+    overflow-x: auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1200px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+th { background: #f8f9fa; }
+
+/* Colores de Columnas */
+.col-entry { background-color: var(--bg-in) !important; }
+.col-exit { background-color: var(--bg-out) !important; }
+.col-final { background-color: var(--bg-final) !important; font-weight: bold; }
+
+.editable-input {
+    width: 60px;
+    border: 1px dashed #3498db;
+    text-align: center;
+}
+
+.totals-section {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.card {
+    background: white;
+    padding: 15px;
+    border-left: 5px solid var(--accent);
+    flex: 1;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.btn-delete { background: var(--danger); color: white; border: none; padding: 5px; cursor: pointer; border-radius: 3px;}

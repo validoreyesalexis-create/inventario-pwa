@@ -1,0 +1,15 @@
+{
+  "name": "Sistema de Inventario Pro",
+  "short_name": "Inventario",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#2c3e50",
+  "theme_color": "#3498db",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2897/2897808.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

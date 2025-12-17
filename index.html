@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Inventario Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Gestión de Inventario Multi-Sede</h1>
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('almacen')">Almacén Principal</button>
+            <button class="tab-btn" onclick="switchTab('tienda1')">Tienda 1</button>
+            <button class="tab-btn" onclick="switchTab('tienda2')">Tienda 2</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="form-container">
+            <h3>Registrar Nuevo Producto</h3>
+            <form id="product-form">
+                <input type="text" id="p-code" placeholder="Código SKU" required>
+                <input type="text" id="p-name" placeholder="Nombre del Producto" required>
+                <input type="number" id="p-price" placeholder="Valor Unitario $" required step="0.01">
+                <input type="number" id="p-stock" placeholder="Saldo Inicial" required>
+                <button type="submit" class="btn-add">Añadir al Almacén</button>
+            </form>
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Buscar por Nombre o SKU..." onkeyup="filterTable()">
+            </div>
+        </section>
+
+        <section id="table-section">
+            <h2 id="current-view-title">Almacén Principal</h2>
+            <div class="table-wrapper">
+                <table id="inventory-table">
+                    </table>
+            </div>
+        </section>
+
+        <section class="totals-section">
+            <div class="card">Total Unidades: <span id="total-qty">0</span></div>
+            <div class="card">Valor Total Inventario: <span id="total-value">$0.00</span></div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html><link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2c3e50">
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js');
+  }
+</script>
