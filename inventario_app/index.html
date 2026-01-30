@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Inventario Pro - Almacén & Tienda</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Gestión de Inventario</h1>
+        <nav>
+            <button id="btn-tienda" class="nav-btn active" onclick="switchPage('tienda')">Tienda</button>
+            <button id="btn-almacen" class="nav-btn" onclick="switchPage('almacen')">Almacén</button>
+        </nav>
+        <button id="btn-add-product" onclick="openProductModal('add')">Agregar Producto</button>
+        <button id="btn-export" onclick="exportData()" style="background-color: #27ae60; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px;">Exportar</button>
+        <button id="btn-import" onclick="document.getElementById('import-file').click()" style="background-color: #8e44ad; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px;">Importar</button>
+        <input type="file" id="import-file" accept=".json" style="display: none;" onchange="importData(event)">
+    </header>
+
+    <main>
+        <div id="page-tienda" class="page active">
+            <h2 class="title-tienda">Inventario de Tienda</h2>
+            
+            <!-- Barra de Búsqueda -->
+            <div class="search-container">
+                <input type="text" id="search-tienda" placeholder="Buscar por código o nombre..." onkeyup="filterTable('tienda')">
+            </div>
+
+            <div class="table-container">
+                <table id="table-tienda">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Unidad</th>
+                            <th>Precio</th>
+                            <th>Entrada</th>
+                            <th>Venta Tienda</th>
+                            <th>Mermas</th>
+                            <th>Saldo Total</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="body-tienda">
+                        <!-- Filas generadas por JS -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="actions">
+                <button class="btn-print" onclick="printTable('tienda')">Imprimir Tabla Tienda</button>
+                <button class="btn-sync" onclick="syncData()">Sincronizar Datos</button>
+            </div>
+        </div>
+
+        <div id="page-almacen" class="page">
+            <h2 class="title-almacen">Inventario de Almacén</h2>
+            
+            <!-- Barra de Búsqueda -->
+            <div class="search-container">
+                <input type="text" id="search-almacen" placeholder="Buscar por código o nombre..." onkeyup="filterTable('almacen')">
+            </div>
+
+            <div class="table-container">
+                <table id="table-almacen">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Unidad</th>
+                            <th>Precio</th>
+                            <th>Entrada</th>
+                            <th>Venta Almacén</th>
+                            <th>Mermas</th>
+                            <th>Saldo Total</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="body-almacen">
+                        <!-- Filas generadas por JS -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="actions">
+                <button class="btn-print" onclick="printTable('almacen')">Imprimir Tabla Almacén</button>
+                <button class="btn-sync" onclick="syncData()">Sincronizar Datos</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal para Agregar Producto -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeProductModal()">&times;</span>
+            <h2 id="modal-title"></h2>
+            <form id="product-form">
+                <input type="hidden" id="product-id">
+                
+                <label for="codigo">Código del Producto:</label>
+                <input type="text" id="codigo" required>
+
+                <label for="nombre">Nombre del Producto:</label>
+                <input type="text" id="nombre" required>
+
+                <label for="unidad">Unidad (U/J):</label>
+                <select id="unidad" required>
+                    <option value="U">U (Unidad)</option>
+                    <option value="J">J (Juego)</option>
+                </select>
+
+                <label for="precio">Precio:</label>
+                <input type="number" id="precio" step="0.01" required>
+
+                <hr>
+                <h3>Movimientos Iniciales (Almacén)</h3>
+                <label for="mov_almacen_entrada">Entrada Inicial (Almacén):</label>
+                <input type="number" id="mov_almacen_entrada" value="0" min="0">
+                
+                <hr>
+                <h3>Movimientos Iniciales (Tienda)</h3>
+                <label for="mov_tienda_entrada">Entrada Inicial (Tienda):</label>
+                <input type="number" id="mov_tienda_entrada" value="0" min="0">
+
+                <button type="submit" id="save-product-btn">Guardar Producto</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para Edición de Movimientos -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeEditModal()">&times;</span>
+            <h2>Editar Movimientos y Datos del Producto</h2>
+            <form id="edit-form">
+                <input type="hidden" id="edit-product-id">
+                <input type="hidden" id="edit-location">
+                
+                <fieldset>
+                    <legend>Datos del Producto</legend>
+                    <label for="edit-codigo">Código:</label>
+                    <input type="text" id="edit-codigo" required>
+
+                    <label for="edit-nombre">Nombre:</label>
+                    <input type="text" id="edit-nombre" required>
+
+                    <label for="edit-unidad">Unidad (U/J):</label>
+                    <select id="edit-unidad" required>
+                        <option value="U">U (Unidad)</option>
+                        <option value="J">J (Juego)</option>
+                    </select>
+
+                    <label for="edit-precio">Precio:</label>
+                    <input type="number" id="edit-precio" step="0.01" required>
+                </fieldset>
+
+                <fieldset>
+                    <legend id="edit-location-title">Movimientos</legend>
+                    <label for="edit-mov-entrada">Entrada:</label>
+                    <input type="number" id="edit-mov-entrada" min="0">
+                    
+                    <label for="edit-mov-venta">Venta:</label>
+                    <input type="number" id="edit-mov-venta" min="0">
+                    
+                    <label for="edit-mov-merma">Merma:</label>
+                    <input type="number" id="edit-mov-merma" min="0">
+                </fieldset>
+
+                <fieldset>
+                    <legend id="edit-transfer-title">Transferencia</legend>
+                    <label for="edit-transfer-cantidad">Cantidad a Transferir:</label>
+                    <input type="number" id="edit-transfer-cantidad" min="0" value="0">
+                    <p id="edit-transfer-info" style="color: #666; font-size: 0.9em; margin-top: 10px;"></p>
+                </fieldset>
+
+                <button type="submit" id="save-edit-btn">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Área de impresión (oculta) -->
+    <div id="print-area" style="display: none;"></div>
+
+    <!-- Input oculto para importar archivos -->
+    <script src="js/storage.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
